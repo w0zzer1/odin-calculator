@@ -3,6 +3,9 @@ console.log("linked")
 let btns = document.querySelectorAll(".numbers");
 let display = document.querySelector(".displaytext1")
 let operatorBtn = document.querySelectorAll(".operator")
+let clearBtn = document.querySelector(".clear")
+let deleteBtn = document.querySelector(".delete")
+let pointBtn = document.querySelector(".point")
 
 let operator;
 let curentNumber;
@@ -36,18 +39,24 @@ function multiply(a, b){
 }
 
 function divide(a,b){
-    return a / b;
+    if (b != undefined){
+        return a / b;
+    } else {
+        return "ERROR"
+    }
 }
 
 btns.forEach(function(i){
     i.addEventListener('click', ()=>{
-    if (curentNumber === undefined){
+    if (curentNumber === undefined && i.innerText != "0"){
         curentNumber = i.innerText;
-    }else{
+    }else if (curentNumber !== undefined){
         curentNumber += i.innerText;
     }
-    displayValue = curentNumber;
-    updateDisplay();
+    if (curentNumber != undefined){
+        displayValue = curentNumber;
+        updateDisplay();
+    }
     })
 })
 
@@ -63,14 +72,42 @@ operatorBtn.forEach(function(i){
             updateDisplay();
         }
         operator = i.innerText;
-        console.log(result);
+        if (operator === "="){
+            updateDisplay(result);
+            result=undefined;
+            operator = undefined;
+        }
     })
 })
 
+deleteBtn.addEventListener("click", ()=>{
+    if (curentNumber === undefined || curentNumber.length < 2 ){
+        curentNumber = undefined
+    } else {
+        curentNumber = curentNumber.substring(0, curentNumber.length-1);
+    }
+    updateDisplay();
+})
+
+clearBtn.addEventListener('click', ()=>{
+    curentNumber = undefined;
+    updateDisplay();
+})
+
+pointBtn.addEventListener('click', ()=>{
+    if (curentNumber === undefined){
+        curentNumber = "0."
+    } else if (curentNumber.includes(".")){
+
+    } else {
+        curentNumber += "."
+    }
+    updateDisplay();    
+})
 
 function updateDisplay(){
     if (arguments[0] !== undefined){
-        display.innerHTML = arguments[0]
+        display.innerHTML = String(arguments[0])
     }
     else if (curentNumber == undefined){
         display.innerHTML = "0";

@@ -55,4 +55,9 @@ button{
     border-radius: 10px;
     width: 50px;
     height: 50px;
+    text-align: center;
+}
+.delete,
+.clear{
+    font-size: 26px;
 }
