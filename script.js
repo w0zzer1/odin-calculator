@@ -1,13 +1,12 @@
 console.log("linked")
 
-let btns = document.querySelectorAll("button");
+let btns = document.querySelectorAll(".numbers");
 let display = document.querySelector(".displaytext1")
+let operatorBtn = document.querySelectorAll(".operator")
 
-let firstNumber = 0;
-let secondNumber = 0;
-let operator = "";
-let displayValue = 0;
-let buttonValue;
+let operator;
+let curentNumber;
+let result;
 
 function operate(operator, firstNumber, secondNumber){
     switch(operator){
@@ -15,7 +14,7 @@ function operate(operator, firstNumber, secondNumber){
             return add(firstNumber,secondNumber);
         case "-":
             return subtract(firstNumber, secondNumber);
-        case "*":
+        case "x":
             return multiply(firstNumber, secondNumber);
         case "/":
             return divide(firstNumber, secondNumber);
@@ -42,12 +41,40 @@ function divide(a,b){
 
 btns.forEach(function(i){
     i.addEventListener('click', ()=>{
-    if (buttonValue === undefined){
-        buttonValue = i.innerText;
+    if (curentNumber === undefined){
+        curentNumber = i.innerText;
     }else{
-    buttonValue += i.innerText;
+        curentNumber += i.innerText;
     }
-    display.innerText = String(buttonValue);
+    displayValue = curentNumber;
+    updateDisplay();
     })
 })
+
+operatorBtn.forEach(function(i){
+    i.addEventListener('click', ()=>{
+        if (result === undefined){
+            result = curentNumber;
+            curentNumber = undefined;
+            updateDisplay();            
+        }else if (curentNumber !== undefined){
+            result = operate(operator, Number(result), Number(curentNumber));
+            curentNumber = undefined;
+            updateDisplay();
+        }
+        operator = i.innerText;
+        console.log(result);
+    })
+})
+
+
+function updateDisplay(){
+    if (arguments[0] !== undefined){
+        display.innerHTML = arguments[0]
+    }
+    else if (curentNumber == undefined){
+        display.innerHTML = "0";
+    }else{
+    display.innerHTML = String(curentNumber);
+}}
 
